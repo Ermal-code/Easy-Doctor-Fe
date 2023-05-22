@@ -98,7 +98,7 @@ const HomeSearch = ({ showResults, setShowResults }) => {
                         </InputGroup>
 
                         {showResults ? (
-                            <div className="homePageSearchResults shadow">
+                            <div className="homePageSearchResults shadow" style={{ zIndex: 9999 }}>
                                 {doctorsAndHopsitals.length > 0 && !loader ? (
                                     loader ? (
                                         <Loader height="20px" />
