@@ -4,12 +4,17 @@ import { useDispatch } from "react-redux"
 import { useHistory } from "react-router"
 import { getDoctorsAndClinics } from "../api/usersApi"
 import SmallSingleSearchResult from "./SmallSingleSearchResult"
+import Loader from "./Loader"
+
+let keyDownTimeOut
 
 const HomeSearch = ({ showResults, setShowResults }) => {
     const dispatch = useDispatch()
     const history = useHistory()
     const [searchText, setSearchText] = useState("")
     const [doctorsAndHopsitals, setDoctorsAndHospitals] = useState([])
+    const [moreResults, setMoreResults] = useState("")
+    const [loader, setLoader] = useState(false)
 
     const handleEnterKey = (e) => {
         if (e.keyCode === 13 || e.key === "Enter") {
@@ -17,23 +22,33 @@ const HomeSearch = ({ showResults, setShowResults }) => {
             history.push("results")
         }
 
-        console.log(e)
+        if ((e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 97 && e.keyCode <= 122)) {
+            if (keyDownTimeOut) clearTimeout(keyDownTimeOut)
 
-        getDoctorsHospitals(`${searchText}${e.key}`)
+            keyDownTimeOut = setTimeout(() => getDoctorsHospitals(`${searchText}${e.key}`), 2500)
+        }
     }
 
     const getDoctorsHospitals = async (keyword) => {
         try {
+            if (!doctorsAndHopsitals.length) setLoader(true)
+
             const query = `?name=${keyword}&specialization=${keyword}`
 
             const response = await getDoctorsAndClinics(query)
 
             if (response.statusText === "OK") {
-                setDoctorsAndHospitals(response.data.slice(0, 5))
+                setDoctorsAndHospitals(response.data.slice(0, 1))
+                const moreDoctors = response.data.length - response.data.slice(0, 1).length
+
+                if (moreDoctors > 0) setMoreResults(`${moreDoctors} more result${moreDoctors > 1 ? "s" : ""}`)
+                else setMoreResults("")
             }
         } catch (error) {
-            return []
+            setDoctorsAndHospitals([])
         }
+
+        setLoader(false)
     }
 
     useEffect(() => {
@@ -84,12 +99,27 @@ const HomeSearch = ({ showResults, setShowResults }) => {
 
                         {showResults ? (
                             <div className="homePageSearchResults shadow">
-                                {doctorsAndHopsitals.map((docOrhosp, index) => (
-                                    <SmallSingleSearchResult
-                                        docOrhosp={docOrhosp}
-                                        key={`${docOrhosp._id}index${index + 2132}`}
-                                    />
-                                ))}
+                                {doctorsAndHopsitals.length > 0 && !loader ? (
+                                    loader ? (
+                                        <Loader height="20px" />
+                                    ) : (
+                                        doctorsAndHopsitals.map((docOrhosp, index) => (
+                                            <SmallSingleSearchResult
+                                                docOrhosp={docOrhosp}
+                                                key={`${docOrhosp._id}index${index + 2132}`}
+                                            />
+                                        ))
+                                    )
+                                ) : (
+                                    <p style={{ fontSize: "18px" }} className="mt-2 w-100 text-center">
+                                        No search results were found
+                                    </p>
+                                )}
+                                {moreResults ? (
+                                    <p style={{ fontSize: "13px" }} className="mt-2 w-100 text-center">
+                                        {moreResults}
+                                    </p>
+                                ) : null}
                             </div>
                         ) : null}
                     </div>
