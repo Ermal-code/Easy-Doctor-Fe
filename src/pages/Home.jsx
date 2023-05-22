@@ -1,14 +1,17 @@
-import React from "react";
-import HomeSearch from "../components/HomeSearch";
-import ReasonsToJoin from "../components/ReasonsToJoin";
+import React from "react"
+import HomeSearch from "../components/HomeSearch"
+import ReasonsToJoin from "../components/ReasonsToJoin"
+import { useState } from "react"
 
 const Home = () => {
-  return (
-    <div>
-      <HomeSearch />
-      <ReasonsToJoin />
-    </div>
-  );
-};
+    const [showResults, setShowResults] = useState(false)
 
-export default Home;
+    return (
+        <div onClick={() => setShowResults(false)}>
+            <HomeSearch showResults={showResults} setShowResults={setShowResults} />
+            <ReasonsToJoin />
+        </div>
+    )
+}
+
+export default Home
