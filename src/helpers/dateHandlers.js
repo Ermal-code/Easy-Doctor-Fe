@@ -41,16 +41,15 @@ export const hoursOfDay = (value, doctor, doctorAppointments) => {
             }
 
             const selectedDayAppointments = doctorAppointments
-                .filter(
-                    (appointment) =>
-                        moment(appointment.startDate).format("MMMM Do YYYY") === moment(value).format("MMMM Do YYYY")
-                )
+                .filter((appointment) => {
+                    return moment(appointment.startDate).format("MMMM Do YYYY") === moment(value).format("MMMM Do YYYY")
+                })
                 .map((appointment) => {
-                    let date = new Date(appointment.startDate)
+                    let date = new Date(new Date(appointment.startDate).toLocaleString())
 
-                    return `${
-                        date.getUTCHours() < 10 ? `0${date.getUTCHours()}` : date.getUTCHours()
-                    }:${date.getUTCMinutes()}${date.getUTCMinutes() === 0 ? "0" : ""}`
+                    return `${date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()}:${date.getMinutes()}${
+                        date.getMinutes() === 0 ? "0" : ""
+                    }`
                 })
 
             if (selectedDayAppointments.length > 0) {
