@@ -38,8 +38,8 @@ const HomeSearch = ({ showResults, setShowResults }) => {
             const response = await getDoctorsAndClinics(query)
 
             if (response.statusText === "OK") {
-                setDoctorsAndHospitals(response.data.slice(0, 1))
-                const moreDoctors = response.data.length - response.data.slice(0, 1).length
+                setDoctorsAndHospitals(response.data.slice(0, 3))
+                const moreDoctors = response.data.length - response.data.slice(0, 3).length
 
                 if (moreDoctors > 0) setMoreResults(`${moreDoctors} more result${moreDoctors > 1 ? "s" : ""}`)
                 else setMoreResults("")
