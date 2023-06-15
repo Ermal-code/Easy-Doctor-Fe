@@ -702,6 +702,13 @@ h6.selectedLoginNavbar {
         margin-left: 5%;
         margin-bottom: 10px;
     }
+
+    .homePageSearchResults {
+        width: 90%;
+        margin-left: 5%;
+        margin-bottom: 10px;
+    }
+
     .searchResultInput {
         width: 100%;
     }
@@ -721,6 +728,13 @@ h6.selectedLoginNavbar {
         margin-left: 0;
         margin-bottom: 10px;
     }
+
+    .homePageSearchResults {
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
     .homePageSearch .input-group input {
         font-size: 14px;
     }
