@@ -59,7 +59,7 @@ const HomeSearch = ({ showResults, setShowResults }) => {
         <Row>
             <Col sm="12" style={{ position: "relative" }} className="px-0">
                 <img
-                    src="https://sybridmd.com/wp-content/uploads/2019/12/Joros_PatientExp-824x320.jpg"
+                    src={`${process.env.PUBLIC_URL}/docAndPatient.jpg`}
                     alt="doctor and patient"
                     className="w-100"
                     style={{ objectFit: "cover" }}
